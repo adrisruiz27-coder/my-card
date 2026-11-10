@@ -122,7 +122,7 @@ const clone = (o) => JSON.parse(JSON.stringify(o));
 /* ---- Defaults ----------------------------------------------------------- */
 {
   const c = clone(base);
-  c.initials = ""; c.vcardFilename = undefined; c.phone = { display: "", dial: "+44 20 7946 0958" };
+  c.initials = ""; c.photo = ""; c.vcardFilename = undefined; c.phone = { display: "", dial: "+44 20 7946 0958" };
   c.github = { url: "https://github.com/octocat", display: "" };
   const r = build(c);
   ok(r.ok, "defaults build: " + r.log);

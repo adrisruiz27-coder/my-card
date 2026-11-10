@@ -31,7 +31,7 @@ const LINK = { url: "", display: "" };
 const SHAPE = {
   $schema: "",
   name: { full: "", given: "", additional: "", family: "" },
-  initials: "", photo: "", role: "", org: "", tagline: "", location: "",
+  initials: "", photo: "", cv: "", role: "", org: "", tagline: "", location: "",
   email: "",
   phone: { display: "", dial: "" },
   whatsapp: { number: "", message: "" },
@@ -153,6 +153,16 @@ function checkLocalFile(field, value, maxKB) {
 }
 checkLocalFile("photo", card.photo, 150);
 checkLocalFile("site.previewImage", card.site.previewImage, 300);
+
+if (card.cv && !/^https:/.test(card.cv)) {
+  if (/^[a-z]+:/i.test(card.cv) || card.cv.includes("..") || card.cv.startsWith("/")) {
+    errors.push(`cv "${card.cv}" must be a file next to index.html or an https:// URL.`);
+  } else if (!existsSync(join(ROOT, card.cv))) {
+    errors.push(`cv "${card.cv}" was not found next to index.html.`);
+  } else if (!/\.pdf$/i.test(card.cv)) {
+    errors.push(`cv "${card.cv}" should be a .pdf file.`);
+  }
+}
 
 if (!card.vcardFilename) {
   card.vcardFilename = card.name.full.normalize("NFD").replace(/[̀-ͯ]/g, "")
@@ -304,7 +314,7 @@ const noscript = `<noscript>
 
 // What the page script reads. `$schema` and `site` are build-time only.
 const config = {
-  name: card.name, initials: card.initials, photo: card.photo,
+  name: card.name, initials: card.initials, photo: card.photo, cv: card.cv,
   role: card.role, tagline: card.tagline, location: card.location, org: card.org,
   email: card.email, phone: card.phone, whatsapp: card.whatsapp,
   linkedin: card.linkedin, github: card.github, website: card.website,

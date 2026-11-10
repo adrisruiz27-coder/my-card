@@ -21,6 +21,7 @@
     },
     "initials": { "type": "string", "maxLength": 3, "description": "Shown in the avatar circle when there is no photo. Defaults to the first letters of given and family name." },
     "photo":    { "type": "string", "description": "Square image file next to index.html (e.g. \"photo.jpg\", ~400×400, under 150 KB) or an https:// URL. Empty shows initials." },
+    "cv":       { "type": "string", "description": "PDF file next to index.html (e.g. \"cv.pdf\") or an https:// URL for the Download CV button. Empty hides the button." },
     "role":     { "type": "string", "description": "Job title or headline, e.g. \"Master of Software Engineering\"." },
     "org":      { "type": "string", "description": "Company or organization. Shown after the role and saved to the vCard ORG field." },
     "tagline":  { "type": "string", "description": "One short line under the role." },
