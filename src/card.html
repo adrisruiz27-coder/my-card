@@ -127,7 +127,7 @@
 
   /* ---- Actions ---- */
   .actions {
-    display: flex; gap: .625rem; flex-wrap: wrap;
+    display: flex; gap: .625rem;
     padding: 0 1.5rem 1.5rem;
   }
   .save {
@@ -145,21 +145,6 @@
     background: transparent; color: var(--accent);
     box-shadow: inset 0 0 0 1.5px var(--accent);
   }
-  .cv {
-    flex: 1;
-    padding: .9375rem 1rem;
-    border: 0; border-radius: 999px;
-    background: var(--press); color: var(--ink);
-    box-shadow: inset 0 0 0 1.5px var(--hairline);
-    font-family: inherit; font-size: 1rem; font-weight: 600;
-    letter-spacing: -0.005em; text-align: center; text-decoration: none;
-    display: inline-flex; align-items: center; justify-content: center; gap: .4375rem;
-    cursor: pointer;
-    transition: opacity .12s ease;
-  }
-  .cv[hidden] { display: none; }
-  .cv:active { opacity: .7; }
-  .cv svg { width: 1.125rem; height: 1.125rem; flex: none; }
   .share {
     width: 3.25rem; flex: none;
     border: 0; border-radius: 999px;
@@ -231,14 +216,6 @@
 
   <div class="actions">
     <button class="save" id="save" type="button">Save contact</button>
-    <a class="cv" id="cv" hidden download>
-      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9"
-           stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
-        <path d="M14 3H7a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h10a2 2 0 0 0 2-2V8z"/>
-        <path d="M14 3v5h5M12 11v6M9.5 14.5 12 17l2.5-2.5"/>
-      </svg>
-      <span>Download CV</span>
-    </a>
     <button class="share" id="share" type="button" aria-label="Share this card" hidden>
       <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9"
            stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
@@ -278,6 +255,10 @@
          + '<path d="M10.1 8.6H13v1.5a3.4 3.4 0 0 1 3-1.7c2.4 0 3.9 1.6 3.9 4.6v6.4h-2.9v-5.9c0-1.5-.6-2.4-1.9-2.4-1.1 0-1.7.7-2 1.5-.1.3-.1.7-.1 1v5.8h-2.9z" fill="currentColor"/>',
     globe: '<circle cx="12" cy="12" r="8.6" fill="none" stroke="currentColor" stroke-width="1.7"/>'
          + '<path d="M3.4 12h17.2M12 3.4a13 13 0 0 1 0 17.2 13 13 0 0 1 0-17.2z" fill="none" stroke="currentColor" stroke-width="1.7"/>',
+    portfolio: '<rect x="3.5" y="7" width="17" height="12.5" rx="2.2" fill="none" stroke="currentColor" stroke-width="1.7"/>'
+             + '<path d="M9 7V5.4A1.6 1.6 0 0 1 10.6 3.8h2.8A1.6 1.6 0 0 1 15 5.4V7M3.5 12.2h17" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round"/>',
+    cv:    '<path d="M14 3.5H7.2A2.2 2.2 0 0 0 5 5.7v12.6a2.2 2.2 0 0 0 2.2 2.2h9.6a2.2 2.2 0 0 0 2.2-2.2V8.5z" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linejoin="round"/>'
+         + '<path d="M14 3.5v5h5M12 11v5.5M9.6 14.3 12 16.7l2.4-2.4" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"/>',
     code:  '<path d="m8.8 8.4-4 3.6 4 3.6M15.2 8.4l4 3.6-4 3.6" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round"/>'
          + '<path d="m13.4 5.6-2.8 12.8" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round"/>',
     pin:   '<path d="M12 21s6.5-6 6.5-10.5a6.5 6.5 0 1 0-13 0C5.5 15 12 21 12 21z" fill="none" stroke="currentColor" stroke-width="1.8"/>'
@@ -330,7 +311,8 @@
     var a = document.createElement("a");
     a.className = "tile";
     a.href = opts.href;
-    if (/^https?:/.test(opts.href)) { a.rel = "noopener"; a.target = "_blank"; }
+    if (opts.download) { a.setAttribute("download", opts.download); }
+    else if (/^https?:/.test(opts.href)) { a.rel = "noopener"; a.target = "_blank"; }
     a.setAttribute("aria-label", opts.label + ": " + opts.sub);
 
     var g = document.createElement("span");
@@ -366,8 +348,11 @@
             color: "var(--li)", href: CONFIG.linkedin.url });
   addTile({ label: "GitHub", sub: CONFIG.github.display, icon: ICONS.code,
             color: "#24292F", href: CONFIG.github.url });
-  addTile({ label: "Website", sub: CONFIG.website.display, icon: ICONS.globe,
+  addTile({ label: "Portfolio", sub: CONFIG.website.display, icon: ICONS.portfolio,
             color: "#0E7C86", href: CONFIG.website.url });
+  addTile({ label: "Download CV", sub: "PDF", icon: ICONS.cv,
+            color: "#5E4B8B", href: CONFIG.cv,
+            download: CONFIG.cv ? CONFIG.cv.split("/").pop() : "" });
 
   /* ---- vCard 3.0 ------------------------------------------------------- */
 
@@ -452,15 +437,6 @@
       status.textContent = "";
     }, 4000);
   });
-
-  /* ---- Download CV ----------------------------------------------------- */
-
-  if (CONFIG.cv) {
-    var cvBtn = $("cv");
-    cvBtn.href = CONFIG.cv;
-    cvBtn.setAttribute("download", CONFIG.cv.split("/").pop());
-    cvBtn.hidden = false;
-  }
 
   /* ---- Share this card ------------------------------------------------- */
 
