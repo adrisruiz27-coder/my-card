@@ -2,34 +2,37 @@
   "$schema": "./card.schema.json",
 
   "name": {
-    "full": "Eduardo Angel Romero Diaz",
-    "given": "Eduardo",
-    "additional": "Angel",
-    "family": "Romero Diaz"
+    "full": "Adriana Ruiz Orbe",
+    "given": "Adriana",
+    "additional": "",
+    "family": "Ruiz Orbe"
   },
-  "initials": "ER",
+  "initials": "",
   "photo": "",
 
-  "role": "Master of Software Engineering",
+  "role": "Product Designer & Digital Enablement",
   "org": "",
   "tagline": "Tap Save contact and skip the typing.",
-  "location": "",
+  "location": "Mexico City",
 
-  "email": "ingeduardoromero@gmail.com",
+  "email": "adris.ruiz27@gmail.com",
   "phone": {
-    "display": "+52 55 4363 4088",
-    "dial": "+525543634088"
+    "display": "+52 55 3227 9659",
+    "dial": "+525532279659"
   },
   "whatsapp": {
-    "number": "525543634088",
+    "number": "525532279659",
     "message": ""
   },
   "linkedin": {
-    "url": "https://www.linkedin.com/in/eduardo-angel-romero-542a5350",
-    "display": "eduardo-angel-romero"
+    "url": "https://www.linkedin.com/in/adriana-ruizorbe",
+    "display": "adriana-ruizorbe"
   },
   "github": { "url": "", "display": "" },
-  "website": { "url": "", "display": "" },
+  "website": {
+    "url": "https://www.behance.net/adrianarUIz",
+    "display": "behance.net/adrianarUIz"
+  },
 
   "site": {
     "url": "",

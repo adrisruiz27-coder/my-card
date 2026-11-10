@@ -107,6 +107,8 @@ const clone = (o) => JSON.parse(JSON.stringify(o));
   const c = clone(base);
   c.whatsapp = { number: "", message: "" };
   c.linkedin = { url: "", display: "" };
+  c.github = { url: "", display: "" };
+  c.website = { url: "", display: "" };
   c.email = "a@b.co"; c.phone = { display: "", dial: "" };
   const r = build(c);
   ok(r.ok, "minimal card builds: " + r.log);
