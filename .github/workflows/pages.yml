@@ -1,0 +1,66 @@
+name: Deploy card to Pages
+
+on:
+  push:
+    branches: [main]
+  workflow_dispatch:
+
+permissions:
+  contents: write   # commit index.html back when card.json was edited on github.com
+  pages: write
+  id-token: write
+
+concurrency:
+  group: pages
+  cancel-in-progress: false
+
+jobs:
+  deploy:
+    runs-on: ubuntu-latest
+    environment:
+      name: github-pages
+      url: ${{ steps.deployment.outputs.page_url }}
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 22
+
+      - name: Build index.html from card.json
+        run: node scripts/build.mjs
+
+      - name: Test
+        run: node scripts/test.mjs
+
+      # Someone edited card.json in the browser and didn't rebuild: commit the
+      # result so the repository always holds a working index.html.
+      - name: Commit rebuilt index.html
+        run: |
+          if ! git diff --quiet -- index.html; then
+            git config user.name "github-actions[bot]"
+            git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+            git commit -m "Rebuild index.html from card.json" -- index.html
+            git pull --rebase origin "$GITHUB_REF_NAME"
+            git push origin "HEAD:$GITHUB_REF_NAME"
+          fi
+
+      - name: Enable and configure Pages
+        uses: actions/configure-pages@v5
+        with:
+          enablement: true
+
+      - name: Assemble site
+        run: |
+          mkdir -p _site
+          cp index.html _site/
+          shopt -s nullglob
+          for f in *.png *.jpg *.jpeg *.svg *.webp *.ico; do cp "$f" _site/; done
+          if [ -d qr ]; then cp -r qr _site/; fi
+
+      - uses: actions/upload-pages-artifact@v3
+        with:
+          path: _site
+
+      - id: deployment
+        uses: actions/deploy-pages@v4
